@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist - MusicDB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <button id="back-button" class="back-button">← Back to Home</button>
+        <div class="artist-layout">
+            <div class="artist-info">
+                <h1 id="artist-name"></h1>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Subscribers</span>
+                        <span id="subscribers" class="stat-value"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Listeners</span>
+                        <span id="listeners" class="stat-value"></span>
+                    </div>
+                </div>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <span id="album-count" class="summary-value"></span>
+                        <span class="summary-label">Albums</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span id="track-count" class="summary-value"></span>
+                        <span class="summary-label">Songs</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span id="total-minutes" class="summary-value"></span>
+                        <span class="summary-label">Minutes</span>
+                    </div>
+                </div>
+            </div>
+            <div class="artist-content">
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="discography">Discography</button>
+                    <button class="tab-button" data-tab="singles">Singles</button>
+                    <button class="tab-button" data-tab="albums">Albums</button>
+                </div>
+                <div id="content-area" class="content-area"></div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
