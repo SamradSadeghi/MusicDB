@@ -1,56 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artist - MusicDB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artist — MusicDB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-    <div class="container">
-        <button id="back-button" class="back-button">← Back to Home</button>
-        <div class="artist-layout">
-            <div class="artist-info">
-                <div>
-                    <h1 id="artist-name"></h1>
-                    <p id="artist-about" class="artist-about"></p>
-                </div>
-                <div class="stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Subscribers</span>
-                        <span id="subscribers" class="stat-value"></span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Listeners</span>
-                        <span id="listeners" class="stat-value"></span>
-                    </div>
-                </div>
-                <div class="summary-stats">
-                    <div class="summary-stat">
-                        <span id="album-count" class="summary-value"></span>
-                        <span class="summary-label">Albums</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span id="track-count" class="summary-value"></span>
-                        <span class="summary-label">Songs</span>
-                    </div>
-                    <div class="summary-stat">
-                        <span id="total-minutes" class="summary-value"></span>
-                        <span class="summary-label">Minutes</span>
-                    </div>
-                </div>
-            </div>
-            <div class="artist-content">
-                <div class="tabs">
-                    <button class="tab-button active" data-tab="discography">Discography</button>
-                    <button class="tab-button" data-tab="singles">Singles</button>
-                    <button class="tab-button" data-tab="albums">Albums</button>
-                </div>
-                <div id="content-area" class="content-area"></div>
-            </div>
+<body class="artist-page">
+
+  <div class="artist-layout" id="artistLayout">
+    <!-- Sidebar (2/5) -->
+    <aside class="artist-sidebar" id="artistSidebar">
+      <a href="index.html" class="back-btn" aria-label="Back to search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Back</span>
+      </a>
+
+      <div class="sidebar-content">
+        <div class="sidebar-avatar" id="sidebarAvatar"></div>
+        <h1 class="sidebar-name" id="sidebarName">—</h1>
+
+        <div class="sidebar-audience">
+          <div class="audience-item">
+            <span class="audience-value" id="statListeners">—</span>
+            <span class="audience-label">listeners</span>
+          </div>
+          <div class="audience-divider"></div>
+          <div class="audience-item">
+            <span class="audience-value" id="statSubscribers">—</span>
+            <span class="audience-label">subscribers</span>
+          </div>
         </div>
-    </div>
-    <script src="app.js"></script>
+
+        <div class="sidebar-stats">
+          <div class="stat-block">
+            <span class="stat-value" id="statAlbums">—</span>
+            <span class="stat-label">Albums</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-block">
+            <span class="stat-value" id="statTracks">—</span>
+            <span class="stat-label">Songs</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-block">
+            <span class="stat-value" id="statMinutes">—</span>
+            <span class="stat-label">Minutes</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main (3/5) -->
+    <main class="artist-main" id="artistMain">
+      <div class="tabs-bar">
+        <button class="tab-btn active" data-tab="discography">Discography</button>
+        <button class="tab-btn" data-tab="singles">Singles</button>
+        <button class="tab-btn" data-tab="albums">Albums</button>
+      </div>
+      <div class="tab-content" id="tabContent">
+        <div class="loading-spinner"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const artistId = parseInt(params.get('id'));
+
+    let currentArtist = null;
+
+    fetch('./final_database.json')
+      .then(r => r.json())
+      .then(data => {
+        currentArtist = data.find(a => a.id === artistId);
+        if (!currentArtist) {
+          document.getElementById('tabContent').innerHTML =
+            '<div class="empty-state">Artist not found. <a href="index.html">Go back</a></div>';
+          return;
+        }
+        renderArtist(currentArtist);
+      })
+      .catch(() => {
+        document.getElementById('tabContent').innerHTML =
+          '<div class="empty-state">Failed to load data. <a href="index.html">Go back</a></div>';
+      });
+
+    function fmt(n) {
+      if (!n && n !== 0) return '—';
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return n.toLocaleString();
+    }
+
+    function fmtTime(seconds) {
+      if (!seconds) return '0:00';
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function renderArtist(a) {
+      document.title = `${a.name} — MusicDB`;
+
+      // Sidebar
+      document.getElementById('sidebarAvatar').textContent = a.name.charAt(0).toUpperCase();
+      document.getElementById('sidebarName').textContent = a.name;
+      document.getElementById('statListeners').textContent = fmt(a.listeners);
+      document.getElementById('statSubscribers').textContent = fmt(a.subscribers);
+
+      const trueAlbums = (a.albums || []).filter(al => al.type === 1);
+      const singles = (a.albums || []).filter(al => al.type === 0);
+      document.getElementById('statAlbums').textContent = trueAlbums.length;
+      document.getElementById('statTracks').textContent = a.track_count ?? '—';
+      document.getElementById('statMinutes').textContent =
+        a.total_length_minutes != null ? Math.round(a.total_length_minutes).toLocaleString() : '—';
+
+      // Tab logic
+      renderTab('discography');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderTab(btn.dataset.tab);
+        });
+      });
+    }
+
+    function renderTab(tab) {
+      const a = currentArtist;
+      let items = a.albums || [];
+
+      if (tab === 'singles') items = items.filter(al => al.type === 0);
+      else if (tab === 'albums') items = items.filter(al => al.type === 1);
+
+      // Sort latest first
+      items = [...items].sort((x, y) => (y.year ?? 0) - (x.year ?? 0));
+
+      if (!items.length) {
+        document.getElementById('tabContent').innerHTML =
+          `<div class="empty-state">No ${tab} found.</div>`;
+        return;
+      }
+
+      document.getElementById('tabContent').innerHTML = items.map(al => renderRelease(al)).join('');
+
+      // Expand/collapse tracks
+      document.querySelectorAll('.release-header').forEach(header => {
+        header.addEventListener('click', () => {
+          const card = header.closest('.release-card');
+          card.classList.toggle('expanded');
+        });
+      });
+    }
+
+    function renderRelease(al) {
+      const isAlbum = al.type === 1;
+      const typeLabel = isAlbum ? 'Album' : 'Single';
+      const totalPlays = (al.tracks || []).reduce((s, t) => s + (t.plays || 0), 0);
+
+      const tracksHtml = (al.tracks || []).map((t, i) => `
+        <div class="track-row">
+          <span class="track-num">${i + 1}</span>
+          <span class="track-title">${escHtml(t.title)}</span>
+          <span class="track-length">${fmtTime(t.length)}</span>
+          <span class="track-plays">${fmt(t.plays)}</span>
+        </div>
+      `).join('');
+
+      return `
+        <div class="release-card">
+          <div class="release-header">
+            <div class="release-thumb ${isAlbum ? 'release-thumb--album' : 'release-thumb--single'}">
+              <span>${al.title.charAt(0).toUpperCase()}</span>
+            </div>
+            <div class="release-meta">
+              <div class="release-top-row">
+                <span class="release-title">${escHtml(al.title)}</span>
+                <span class="release-badge ${isAlbum ? 'badge-album' : 'badge-single'}">${typeLabel}</span>
+              </div>
+              <div class="release-sub">
+                <span>${al.year ?? '—'}</span>
+                <span class="dot-sep">·</span>
+                <span>${al.songs ?? (al.tracks?.length ?? 0)} song${(al.songs ?? al.tracks?.length ?? 0) !== 1 ? 's' : ''}</span>
+                <span class="dot-sep">·</span>
+                <span>${fmtTime(al.length)}</span>
+                <span class="dot-sep">·</span>
+                <span>${fmt(totalPlays)} plays</span>
+              </div>
+            </div>
+            <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="release-tracks">
+            <div class="tracks-header">
+              <span></span>
+              <span>Title</span>
+              <span>Length</span>
+              <span>Plays</span>
+            </div>
+            ${tracksHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    function escHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
 </body>
 </html>
