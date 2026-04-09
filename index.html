@@ -9,11 +9,20 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="title">MusicDB</h1>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search for an artist..." autocomplete="off">
-            <div id="search-results" class="search-results"></div>
-        </div>
+        <header class="hero">
+            <div class="hero-copy">
+                <h1 id="title">MusicDB</h1>
+                <p class="hero-tagline">Search artists, explore albums, and open full discography details instantly.</p>
+            </div>
+            <form id="search-form" class="search-container" novalidate>
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔎</span>
+                    <input type="text" id="search-input" placeholder="Search artist name" autocomplete="off">
+                </div>
+                <button class="search-button" type="submit">Search</button>
+                <div id="search-results" class="search-results"></div>
+            </form>
+        </header>
     </div>
     <script src="app.js"></script>
 </body>
