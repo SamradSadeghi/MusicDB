@@ -1,0 +1,21 @@
+Home: Opens as soon as one opens the website (+ every time they go back from an artist's tab)
+MusicDB displayed modernly in the middle
+- black lexend
+- appealing
+includes a search bar to search for an artists name:
+- quick results under the search after every letter
+- modern searh field
+
+Artist Tab: Opens after the user clicks on their name as a result of their search
+includes a back botton to go back to the Home Page
+2/5 of the screen on the left will be an Onyx filled rectangle
+- This will included an extra-bolded artist's name almost at the 1/4 top of the rectangle
+- number of subscribers and listeners included in a smaller font
+- lastly on the bottom there will be 3 stats seperated with vertical lines: number of albums, number of songs (total = album songs + singles), minutes sang
+the other 3/5 of the screen will be Azure Mist with 3 tabs to choose from:
+1- Discography - All Singles and Albums will be displayed with their stats (+ the songs in each and their stats) in the order of publishin (lastest on top)
+2- Singles - Only displays Singles and their songs and stats in the same lastest order
+3- Albums - Only display Albums and their songs and stats in the same lastest order
+
+All pages must have modern UI + efficient UX.
+Remember, this needs to be an static website to run seamlessly in GitHub Pages.

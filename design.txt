@@ -1,0 +1,38 @@
+Font: lexend
+Used throughout the netire website.
+This font can be used in different formats (black, semi-bold, normal, etc.).
+----
+Color Pallete:
+- CSV
+
+3c906e,cc6414,0a0a0a,ebfcfb,343f3e
+
+- With #
+
+#3c906e, #cc6414, #0a0a0a, #ebfcfb, #343f3e
+
+- Array
+
+["3c906e","cc6414","0a0a0a","ebfcfb","343f3e"]
+
+- Object
+
+{"Sea Green":"3c906e","Burnt Caramel":"cc6414","Onyx":"0a0a0a","Azure Mist":"ebfcfb","Iron Grey":"343f3e"}
+
+- Extended Array
+
+[{"name":"Sea Green","hex":"3c906e","rgb":[60,144,110],"cmyk":[58,0,24,44],"hsb":[156,58,56],"hsl":[156,41,40],"lab":[54,-34,11]},{"name":"Burnt Caramel","hex":"cc6414","rgb":[204,100,20],"cmyk":[0,51,90,20],"hsb":[26,90,80],"hsl":[26,82,44],"lab":[54,37,58]},{"name":"Onyx","hex":"0a0a0a","rgb":[10,10,10],"cmyk":[0,0,0,96],"hsb":[0,0,4],"hsl":[0,0,4],"lab":[3,0,0]},{"name":"Azure Mist","hex":"ebfcfb","rgb":[235,252,251],"cmyk":[7,0,0,1],"hsb":[176,7,99],"hsl":[176,74,95],"lab":[98,-6,-1]},{"name":"Iron Grey","hex":"343f3e","rgb":[52,63,62],"cmyk":[17,0,2,75],"hsb":[175,17,25],"hsl":[175,10,23],"lab":[26,-5,-1]}]
+
+- XML
+
+<palette>
+  <color name="Sea Green" hex="3c906e" r="60" g="144" b="110" />
+  <color name="Burnt Caramel" hex="cc6414" r="204" g="100" b="20" />
+  <color name="Onyx" hex="0a0a0a" r="10" g="10" b="10" />
+  <color name="Azure Mist" hex="ebfcfb" r="235" g="252" b="251" />
+  <color name="Iron Grey" hex="343f3e" r="52" g="63" b="62" />
+</palette>
+----
+Style: modern
+Tags: Simple, appealing, professionally
+Avoid: old-fashioned design, unrounded rectangles, non-apealling search field
